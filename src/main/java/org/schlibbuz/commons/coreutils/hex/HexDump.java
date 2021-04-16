@@ -40,8 +40,9 @@ public class HexDump {
     private static final char HDR_SEP_SIDE = ' ';
     private static final char HDR_SEP_VERT = '|';
     private static final char NEW_LINE = '\n';
+    private static final char ZERO = '0';
     private static final String AREA_SEP = genAreaSep();
-    private static final String ADDR_BASE = "00000000";
+    private static final String ADDR_BASE = genAddrBase();
     private static final String TBL_HDR = genTableHeader();
     private static final String TBL_LEFT_GAP = "     ";
 
@@ -71,6 +72,12 @@ public class HexDump {
                 // last separator abused as \n
                 + (BODY_COLS * (BODY_COL_WIDTH + 1))
             );
+    }
+
+    private static String genAddrBase() {
+        StringBuilder s = new StringBuilder(ADDR_LENGTH);
+        for (int index = 0; index < ADDR_LENGTH; index ++) s.append(ZERO);
+        return s.toString();
     }
 
     private static String genAreaSep() {
@@ -105,7 +112,7 @@ public class HexDump {
     private static StringBuilder appendTableHeaderCenter(StringBuilder tableHeader) {
         for (int col = 0; col < BODY_COLS; col++) {
             tableHeader
-                    .append('0')
+                    .append(ZERO)
                     .append(Integer.toHexString(col).toUpperCase())
                     .append(BODY_COL_SEP);
         }
@@ -168,7 +175,7 @@ public class HexDump {
         StringBuilder s = new StringBuilder(4);
         s.append(Integer.toHexString((int)val).toUpperCase());
 
-        if (s.length() % 2 == 1) s.insert(0, '0');
+        if (s.length() % 2 == 1) s.insert(0, ZERO);
 
         for (int index = 0; index < s.length(); index+=2) {
 
@@ -186,7 +193,7 @@ public class HexDump {
             for (byte bytesPut = 0; bytesPut < BODY_COLS && bufIndex < buf.length;) {
                 StringBuilder hexVal = new StringBuilder(4);
                 hexVal.append(Integer.toHexString((int)buf[bufIndex]).toUpperCase());
-                if (hexVal.length() % 2 == 1) hexVal.insert(0, '0');
+                if (hexVal.length() % 2 == 1) hexVal.insert(0, ZERO);
                 for (int index = 0; index < hexVal.length(); index+=2) {
                     line.append(hexVal.substring(index, index + 2)).append(BODY_COL_SEP);
                     bytesPut++;
