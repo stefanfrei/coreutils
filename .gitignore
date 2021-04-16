@@ -1,14 +1,25 @@
-.gradle
-/build/
+# netbeans
+nbproject/
+nb-configuration.xml
+nbactions.xml
 
-# Ignore Gradle GUI config
-gradle-app.setting
+#vscode
+.vscode/
+.settings/
+.classpath
+.factorypath
+.project
 
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
+# mvn
+target/
+release.properties
 
-# Cache of project
-.gradletasknamecache
-
-# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
-# gradle/wrapper/gradle-wrapper.properties
+#gradle
+.gradle/
+bin/
+build/
+gradle/
+gradlew*
+# project specific
+src/main/resources/app.props
+lib/
