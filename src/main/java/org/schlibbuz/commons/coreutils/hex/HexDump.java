@@ -30,14 +30,17 @@ package org.schlibbuz.commons.coreutils.hex;
 public class HexDump {
 
     private static final byte ADDR_LENGTH = 8;
+    private static final byte AREA_SEP_WIDTH = 5;
     private static final byte BODY_COLS = 16;
     private static final byte BODY_COL_WIDTH = 2;
     private static final byte TBL_HDR_HEIGHT = 2;
     private static final byte TBL_WIDTH = getTableWidth();
     private static final char BODY_COL_SEP = ' ';
     private static final char HDR_SEP_HORIZ = '-';
+    private static final char HDR_SEP_SIDE = ' ';
     private static final char HDR_SEP_VERT = '|';
     private static final char NEW_LINE = '\n';
+    private static final String AREA_SEP = genAreaSep();
     private static final String ADDR_BASE = "00000000";
     private static final String TBL_HDR = genTableHeader();
     private static final String TBL_LEFT_GAP = "     ";
@@ -70,6 +73,18 @@ public class HexDump {
             );
     }
 
+    private static String genAreaSep() {
+        byte sideLen = AREA_SEP_WIDTH / 2;
+        boolean even = AREA_SEP_WIDTH % 2 == 0;
+        if (even) sideLen -= 1;
+        StringBuilder s = new StringBuilder(AREA_SEP_WIDTH);
+        for (int index = 0; index < sideLen; index++) s.append(HDR_SEP_SIDE);
+        for (int index = 0; index < AREA_SEP_WIDTH - 2 * sideLen; index++)
+            s.append(HDR_SEP_VERT);
+        for (int index = 0; index < sideLen; index++) s.append(HDR_SEP_SIDE);
+        return s.toString();
+    }
+
     private static String genTableHeader() {
         StringBuilder tableHeader = new StringBuilder(TBL_WIDTH * TBL_HDR_HEIGHT);
         appendTableHeaderLeft(tableHeader);
@@ -84,7 +99,7 @@ public class HexDump {
     }
 
     private static StringBuilder appendTableHeaderGap(StringBuilder tableHeader) {
-        return tableHeader.append("  ").append(HDR_SEP_VERT).append("  ");
+        return tableHeader.append(AREA_SEP);
     }
 
     private static StringBuilder appendTableHeaderCenter(StringBuilder tableHeader) {
@@ -166,7 +181,7 @@ public class HexDump {
         int addr = 0;
         while(bufIndex < buf.length) {
             StringBuilder line = new StringBuilder(TBL_WIDTH);
-            line.append(makeAddr(addr)).append(TBL_LEFT_GAP);
+            line.append(makeAddr(addr)).append(AREA_SEP);
             addr += BODY_COLS;
             for (byte bytesPut = 0; bytesPut < BODY_COLS && bufIndex < buf.length;) {
                 StringBuilder hexVal = new StringBuilder(4);
